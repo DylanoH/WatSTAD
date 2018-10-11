@@ -26,22 +26,22 @@ public class MainActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                    Fragment selectedFregment = null;
+                    Fragment selectedFragment = null;
 
                     switch (menuItem.getItemId()) {
                         case R.id.nav_profile:
-                            selectedFregment = new ProfileFragment();
+                            selectedFragment = new ProfileFragment();
                             break;
                         case R.id.nav_home:
-                            selectedFregment = new HomeFragment();
+                            selectedFragment = new HomeFragment();
                             break;
                         case R.id.nav_recent:
-                            selectedFregment = new RecentFragment();
+                            selectedFragment = new RecentFragment();
                             break;
                     }
 
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            selectedFregment).commit();
+                            selectedFragment).commit();
 
                     return true;
                 }

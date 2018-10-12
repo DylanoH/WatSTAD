@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "110995926282",
+    "firebase_url": "https://watstad.firebaseio.com",
+    "project_id": "watstad",
+    "storage_bucket": "watstad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:110995926282:android:0fad4b6538b16762",
+        "android_client_info": {
+          "package_name": "com.example.watstad.watstad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "110995926282-rlomap8d8s734kr00chl9e6uqf9ftk73.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.watstad.watstad",
+            "certificate_hash": "6fe661a0d530f0caae90621c6847d4537896c363"
+          }
+        },
+        {
+          "client_id": "110995926282-qh49tpn27730bc7jbrrcr35tqe5vq6jk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQDInyH8VkiU7H_RLlW9MPR18zTJsFZR8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "110995926282-qh49tpn27730bc7jbrrcr35tqe5vq6jk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

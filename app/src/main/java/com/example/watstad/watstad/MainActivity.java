@@ -17,10 +17,15 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener );
-
+        bottomNav.setSelectedItemId(R.id.nav_home);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new HomeFragment()).commit();
+
+
     }
+
+    //TODO fix the menu to select the home fragment item from the start.
+    //TODO fix the menu dissapearing after a restart
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {

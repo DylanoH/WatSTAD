@@ -28,8 +28,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mAuth = FirebaseAuth.getInstance();
 
-        editTextEmailLogin = findViewById(R.id.editTextEmailSignUp);
-        editTextPasswordLogin = findViewById(R.id.editTextPasswordSignUp);
+        editTextEmailLogin = findViewById(R.id.editTextEmailLogin);
+        editTextPasswordLogin = findViewById(R.id.editTextPasswordLogin);
 
         findViewById(R.id.textViewSignUpHere).setOnClickListener(this);
         findViewById(R.id.buttonLogin).setOnClickListener(this);

@@ -21,14 +21,19 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.Objects;
 
@@ -36,11 +41,17 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
+        FusedLocationProviderClient mFusedLocationClient;
 
     GoogleMap mGoogleMap;
     MapView mMapView;
     View mView;
     private GoogleApiClient client;
+    private LocationRequest locationRequest;
+    private Location lastLocation;
+    private Marker currentLocationMarker;
+    public static final int PERMISSION_REQUEST_LOCATION_CODE = 99;
+
 
 
     @Nullable
@@ -96,10 +107,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onViewCreated(@NonNull View view, @NonNull Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         AskPermission();
         buildGoogleApiClient();
         initMap();
+
     }
 
     private void initMap() {
@@ -122,7 +135,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
 
 
-
+        //
         googleMap.setMyLocationEnabled(true);
 
 
@@ -140,24 +153,50 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onLocationChanged(Location location) {
+        lastLocation = location;
+
+        if (currentLocationMarker != null) {
+            currentLocationMarker.remove();
+        }
+
+        LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
+
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latlng);
+        markerOptions.title("Current Location");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+        currentLocationMarker = mGoogleMap.addMarker(markerOptions);
+
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomBy(10));
+
+//        if (client != null) {
+//            LocationServices.fuse
+//        }
+
+
 
     }
 
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        locationRequest = new LocationRequest();
 
+        locationRequest.setInterval(2000);
+        locationRequest.setFastestInterval(2000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
     }
+
 
     @Override
     public void onConnectionSuspended(int i) {
 
     }
 
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-
-
 }

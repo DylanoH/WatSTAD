@@ -6,33 +6,21 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 
 <item
     android:id="@+id/nav_profile"
-    android:icon="@drawable/ic_profile_black_24dp"
+    android:icon="@drawable/profile_icon"
     android:title="Profile"
-    app:showAsAction="always"/>
-
-
-<!--svg... displays nothing-->
-    <!--<item-->
-        <!--android:id="@+id/nav_profile"-->
-        <!--android:icon="@drawable/ic_profile_icon"-->
-        <!--android:title="Profile"-->
-        <!--app:showAsAction="always"/>    -->
-
-    <!--imported images, displays only a circle-->
-    <!--<item-->
-    <!--android:id="@+id/nav_profile"-->
-    <!--android:icon="@drawable/profile_icon"-->
-    <!--android:title="Profile"-->
-    <!--app:showAsAction="always"/>    -->
+    app:showAsAction="always" />
 
 <item
     android:id="@+id/nav_home"
-    android:icon="@drawable/ic_home_black_24dp"
+    android:icon="@drawable/watstad_logo_small"
     android:title="Home"
     app:showAsAction="always" />
+
+
+
 <item
     android:id="@+id/nav_recent"
-    android:icon="@drawable/ic_hourglass_empty_black_24dp"
+    android:icon="@drawable/history_icon"
     android:title="Recent"
     app:showAsAction="always" />
 </menu>

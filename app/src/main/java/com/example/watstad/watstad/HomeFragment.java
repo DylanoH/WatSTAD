@@ -121,22 +121,22 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         mGoogleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-            buildGoogleApiClient();
+//            buildGoogleApiClient();
 //            googleMap.setMyLocationEnabled(true);
 
 
 
     }
 
-    protected synchronized void buildGoogleApiClient () {
-        client = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-
-        client.connect();
-    }
+//    protected synchronized void buildGoogleApiClient () {
+//        client = new GoogleApiClient.Builder(getActivity())
+//                .addConnectionCallbacks(this)
+//                .addOnConnectionFailedListener(this)
+//                .addApi(LocationServices.API)
+//                .build();
+//
+//        client.connect();
+//    }
 
     @Override
     public void onLocationChanged(Location location) {

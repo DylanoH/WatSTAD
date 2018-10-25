@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationListener;
 
 import android.os.Bundle;
@@ -42,7 +43,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private GoogleApiClient client;
 
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,18 +52,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     }
 
-    private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
-    private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
 
     private Boolean mLocationPermissionsGranted = false;
 
+
     private void AskPermission() {
         // Here, thisActivity is the current activity
-        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION};
+//        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
+//                Manifest.permission.ACCESS_COARSE_LOCATION};
 
-        if (ContextCompat.checkSelfPermission(getContext(),
+        if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -72,8 +70,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             // Permission is not granted
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION ) || ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION )) {
+                    Manifest.permission.ACCESS_FINE_LOCATION) || ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
@@ -95,17 +93,16 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     }
 
 
-
     @Override
     public void onViewCreated(@NonNull View view, @NonNull Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         AskPermission();
-
+        buildGoogleApiClient();
         initMap();
     }
 
-    private void initMap(){
+    private void initMap() {
         mMapView = getView().findViewById(R.id.gMap1);
         if (mMapView != null) {
             mMapView.onCreate(null);
@@ -118,12 +115,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     public void onMapReady(GoogleMap googleMap) {
 //        MapsInitializer.initialize(Objects.requireNonNull(getActivity()));
 
+
+
         mGoogleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-            buildGoogleApiClient();
-//            googleMap.setMyLocationEnabled(true);
 
+
+
+        googleMap.setMyLocationEnabled(true);
 
 
     }

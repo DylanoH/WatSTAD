@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorOrange">
+    android:background="@color/colorDarkBlue">
 
 
     <TextView
@@ -13,11 +14,41 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@color/colorLightBlue"
+        android:fontFamily="@font/bookosb"
         android:paddingStart="24dp"
-        android:paddingEnd="60dp"
         android:paddingTop="14dp"
+        android:paddingEnd="60dp"
         android:text="@string/my_profile"
         android:textColor="@color/colorWhite"
-        android:textSize="24sp"
-        android:fontFamily="@font/bookosb"/>
+        android:textSize="24sp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/imageViewProfileImage"
+        android:layout_width="188dp"
+        android:layout_height="211dp"
+        android:layout_below="@+id/textViewMyProfile"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/fill_icon" />
+
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageViewProfileImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/bookosb"
+        android:text="Tap to enter your name!"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="88dp"
+        android:text="Button" />
+
 </RelativeLayout>

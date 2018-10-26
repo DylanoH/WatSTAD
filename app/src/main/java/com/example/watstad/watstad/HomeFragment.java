@@ -3,6 +3,7 @@ package com.example.watstad.watstad;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.Location;
 
 import com.google.android.gms.location.LocationListener;
@@ -27,6 +28,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Objects;
@@ -36,6 +38,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
+    public MainActivity mainActivity;
     GoogleMap mGoogleMap;
     MapView mMapView;
     View mView;
@@ -103,6 +106,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         AskPermission();
 
         initMap();
+
+        mainActivity = (MainActivity) getActivity();
     }
 
     private void initMap(){
@@ -119,6 +124,19 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 //        MapsInitializer.initialize(Objects.requireNonNull(getActivity()));
 
         mGoogleMap = googleMap;
+
+        try {
+            boolean success = mGoogleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            mainActivity, R.raw.maps_style));
+
+            if (!success) {
+                Log.e("Loading map", "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e("Loading map", "Can't find style. Error: ", e);
+        }
+
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
 //            buildGoogleApiClient();

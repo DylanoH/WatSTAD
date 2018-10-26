@@ -7,9 +7,11 @@ import android.content.res.Resources;
 import android.location.Location;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationListener;
 
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -63,7 +66,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     public static final int PERMISSION_REQUEST_LOCATION_CODE = 99;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
-    private static final float DEFAULT_ZOOM = 15f;
+    private static final float DEFAULT_ZOOM = 20f;
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
@@ -116,8 +119,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     }
 
     @Override
-    public void onRequestPermissionsResult ( int requestCode,
-                                             @NonNull String[] permissions, @NonNull int[] grantResults){
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
         mLocationPermissionsGranted = false;
 
         switch (requestCode) {
@@ -137,7 +140,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
-    private void getDeviceLocation () {
+    private void getDeviceLocation() {
         Log.d(TAG, "getDeviceLocation: getting the devices current location");
 
 
@@ -151,6 +154,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                         if (task.isSuccessful()) {
 //                            Log.d(TAG, "onComplete: found location!");
                             Location currentLocation = (Location) task.getResult();
+                            Log.d(TAG, "Koekje: " + currentLocation.toString());
 
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                     DEFAULT_ZOOM);
@@ -167,12 +171,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
-    private void moveCamera (LatLng latLng,float zoom){
+    private void moveCamera(LatLng latLng, float zoom) {
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude);
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
-    private void initMap () {
+    private void initMap() {
         mMapView = getView().findViewById(R.id.gMap1);
         if (mMapView != null) {
             mMapView.onCreate(null);
@@ -182,7 +186,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     }
 
     @Override
-    public void onMapReady (GoogleMap googleMap){
+    public void onMapReady(GoogleMap googleMap) {
         Toast.makeText(mainActivity, "Map is Ready", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "onMapReady: map is ready");
         mGoogleMap = googleMap;
@@ -194,6 +198,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                     Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
+            buildGoogleApiClient();
             mGoogleMap.setMyLocationEnabled(true);
             mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
 
@@ -213,7 +218,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
-    protected synchronized void buildGoogleApiClient () {
+    protected synchronized void buildGoogleApiClient() {
         client = new GoogleApiClient.Builder(mainActivity)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -224,7 +229,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     }
 
     @Override
-    public void onLocationChanged (Location location){
+    public void onLocationChanged(Location location) {
         lastLocation = location;
 
         if (currentLocationMarker != null) {
@@ -242,17 +247,37 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
         mGoogleMap.animateCamera(CameraUpdateFactory.zoomBy(10));
 
+//        if (client != null) {
+//            LocationServices.getFusedLocationProviderClient(mainActivity).removeLocationUpdates();
+//        }
+
 
     }
 
 
     @Override
-    public void onConnected (@Nullable Bundle bundle){
+    public void onConnected(@Nullable Bundle bundle) {
         locationRequest = new LocationRequest();
 
-        locationRequest.setInterval(2000);
-        locationRequest.setFastestInterval(2000);
+        locationRequest.setInterval(1000);
+        locationRequest.setFastestInterval(1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+//        LocationServices.getFusedLocationProviderClient(mainActivity).requestLocationUpdates();
+
+
+        if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            mFusedLocationProviderClient.requestLocationUpdates(locationRequest, new LocationCallback() {
+                        @Override
+                        public void onLocationResult(LocationResult locationResult) {
+                            // do work here
+                            onLocationChanged(locationResult.getLastLocation());
+                        }
+                    },
+                    Looper.myLooper());
+        }
+
+
     }
 
 

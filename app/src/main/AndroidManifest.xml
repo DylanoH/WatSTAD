@@ -31,15 +31,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".SignUpActivity" />
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
     </application>
 
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true"
         />
+
 
 
 

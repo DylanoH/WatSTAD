@@ -67,6 +67,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     public static final int PERMISSION_REQUEST_LOCATION_CODE = 99;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 20f;
+    int PROXIMITY_RADIUS = 10000;
+    double latitude,longitude;
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
@@ -155,9 +157,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 //                            Log.d(TAG, "onComplete: found location!");
                             Location currentLocation = (Location) task.getResult();
                             Log.d(TAG, "Koekje: " + currentLocation.toString());
+                            latitude = currentLocation.getLatitude();
+                            longitude = currentLocation.getLongitude();
 
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                     DEFAULT_ZOOM);
+
+
 
                         } else {
                             Log.d(TAG, "onComplete: current location is null");
@@ -202,6 +208,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             mGoogleMap.setMyLocationEnabled(true);
             mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
 
+            showNearbyPlaces("atm");
+
             try {
                 boolean success = mGoogleMap.setMapStyle(
                         MapStyleOptions.loadRawResourceStyle(
@@ -218,6 +226,33 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
+    public void showNearbyPlaces(String search) {
+        Object dataTransfer[] = new Object[2];
+        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+
+        mGoogleMap.clear();
+        String url = getUrl(latitude, longitude, search);
+        dataTransfer[0] = mGoogleMap;
+        dataTransfer[1] = url;
+        Log.d(TAG, "locationn: " + latitude + ", " + longitude);
+        getNearbyPlacesData.execute(dataTransfer);
+    }
+
+
+    private String getUrl(double latitude, double longitude, String nearbyPlace) {
+        StringBuilder googlePlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+
+        googlePlaceUrl.append("location="+latitude+","+longitude);
+        googlePlaceUrl.append("&radius="+PROXIMITY_RADIUS);
+        googlePlaceUrl.append("&type="+nearbyPlace);
+
+        googlePlaceUrl.append("&key="+"AIzaSyBtKXs8q3AYIhL3vjKxwgLNDzPhYF4vUmU");
+
+        Log.d(TAG, "url = "+googlePlaceUrl.toString());
+
+        return googlePlaceUrl.toString();
+    }
+
     protected synchronized void buildGoogleApiClient() {
         client = new GoogleApiClient.Builder(mainActivity)
                 .addConnectionCallbacks(this)
@@ -230,11 +265,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onLocationChanged(Location location) {
-        lastLocation = location;
 
+        lastLocation = location;
+        Log.d(TAG, "locationnn:" + latitude + ", " + longitude);
         if (currentLocationMarker != null) {
             currentLocationMarker.remove();
         }
+
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
 
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
 
@@ -245,26 +284,19 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         currentLocationMarker = mGoogleMap.addMarker(markerOptions);
 
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
-        mGoogleMap.animateCamera(CameraUpdateFactory.zoomBy(10));
-
-//        if (client != null) {
-//            LocationServices.getFusedLocationProviderClient(mainActivity).removeLocationUpdates();
-//        }
-
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomBy(25));
 
     }
+
 
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         locationRequest = new LocationRequest();
 
-        locationRequest.setInterval(1000);
+        locationRequest.setInterval(100);
         locationRequest.setFastestInterval(1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-
-//        LocationServices.getFusedLocationProviderClient(mainActivity).requestLocationUpdates();
-
 
         if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             mFusedLocationProviderClient.requestLocationUpdates(locationRequest, new LocationCallback() {
@@ -277,6 +309,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                     Looper.myLooper());
         }
     }
+
+
 
 
     @Override

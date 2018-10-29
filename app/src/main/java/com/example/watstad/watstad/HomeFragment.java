@@ -276,8 +276,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                     },
                     Looper.myLooper());
         }
-
-
     }
 
 

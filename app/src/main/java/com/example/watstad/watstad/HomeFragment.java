@@ -66,10 +66,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     public static final int PERMISSION_REQUEST_LOCATION_CODE = 99;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
-    private static final float DEFAULT_ZOOM = 20f;
+    private static final float DEFAULT_ZOOM = 17;
     int PROXIMITY_RADIUS = 10000;
-    double latitude = 51.450851;
-    double longitude = 5.480200;
+//    double latitude = 51.450851;
+//    double longitude = 5.480200;
+    public double latitude;
+    public double longitude;
 
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -158,9 +160,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                         if (task.isSuccessful()) {
 //                            Log.d(TAG, "onComplete: found location!");
                             Location currentLocation = (Location) task.getResult();
-                            Log.d(TAG, "Koekje: " + currentLocation.toString());
+
+                            Log.d(TAG, "Koekje: " + currentLocation.getLongitude() + ", " + currentLocation.getLatitude());
+
                             latitude = currentLocation.getLatitude();
                             longitude = currentLocation.getLongitude();
+
+                            showNearbyPlaces("art_gallery|cemetery|church|city_hall|courthouse|embassy|hindu_temple|library|mosque|museum|park|shopping_mall|stadium|synagogue|train_station|zoo");
 
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                     DEFAULT_ZOOM);
@@ -207,10 +213,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 return;
             }
             buildGoogleApiClient();
-            mGoogleMap.setMyLocationEnabled(true);
-            mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
 
-            showNearbyPlaces("art_gallery|cemetery|church|city_hall|courthouse|embassy|hindu_temple|library|mosque|museum|park|shopping_mall|stadium|synagogue|train_station|zoo");
+            mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+            mGoogleMap.setMyLocationEnabled(true);
 
             try {
                 boolean success = mGoogleMap.setMapStyle(
@@ -231,12 +236,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     public void showNearbyPlaces(String search) {
         Object dataTransfer[] = new Object[2];
         GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
-        Log.d(TAG, "Koekje2: " + latitude + ", " +  longitude);
         mGoogleMap.clear();
         String url = getUrl(latitude, longitude, search);
         dataTransfer[0] = mGoogleMap;
         dataTransfer[1] = url;
-        Log.d(TAG, "locationn: " + latitude + ", " + longitude);
+        Log.d(TAG, "locationnboy: " + latitude + ", " + longitude);
         getNearbyPlacesData.execute(dataTransfer);
     }
 
@@ -268,25 +272,27 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onLocationChanged(Location location) {
 
-        lastLocation = location;
+        //lastLocation = location;
         Log.d(TAG, "locationnn:" + latitude + ", " + longitude);
-        if (currentLocationMarker != null) {
-            currentLocationMarker.remove();
-        }
+//        if (currentLocationMarker != null) {
+//            currentLocationMarker.remove();
+//        }
+
+        Log.d(TAG, "koekje3:" + location + ", " + latitude + ", " + longitude);
 
         latitude = location.getLatitude();
         longitude = location.getLongitude();
 
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
 
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latlng);
-        markerOptions.title("Current Location");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-        currentLocationMarker = mGoogleMap.addMarker(markerOptions);
+//        MarkerOptions markerOptions = new MarkerOptions();
+//        markerOptions.position(latlng);
+//        markerOptions.title("Current Location");
+//        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+//        currentLocationMarker = mGoogleMap.addMarker(markerOptions);
 
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
-        mGoogleMap.animateCamera(CameraUpdateFactory.zoomBy(25));
+//        mGoogleMap.animateCamera(CameraUpdateFactory.zoomBy(17));
 
     }
 
@@ -300,15 +306,20 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         locationRequest.setFastestInterval(1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
-        if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mFusedLocationProviderClient.requestLocationUpdates(locationRequest, new LocationCallback() {
+
                         @Override
                         public void onLocationResult(LocationResult locationResult) {
                             // do work here
+                            Log.d(TAG, "yowaddup: " + "yoyo");
                             onLocationChanged(locationResult.getLastLocation());
+
                         }
+
                     },
                     Looper.myLooper());
+
         }
     }
 

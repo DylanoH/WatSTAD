@@ -1,5 +1,6 @@
 package com.example.watstad.watstad;
 
+import android.location.Location;
 import android.os.AsyncTask;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -8,6 +9,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
@@ -16,14 +18,17 @@ import java.util.List;
 
 public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
+//    HomeFragment homeFragment = new HomeFragment();
 
     String googlePlacesData;
-    GoogleMap mMap;
+    GoogleMap mgoogleMap;
     String url;
+    Boolean isVisited = false;
+//    float[] result = new float[1];
 
     @Override
     protected String doInBackground(Object... objects) {
-        mMap = (GoogleMap)objects[0];
+        mgoogleMap = (GoogleMap)objects[0];
         url = (String)objects[1];
 
         DownloadUrl downloadUrl = new DownloadUrl();
@@ -51,17 +56,40 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
             String placeName = googlePlace.get("place_name");
             String vicinity = googlePlace.get("vicinity");
+            String details = googlePlace.get("details");
             double lat = Double.parseDouble(googlePlace.get("lat"));
             double lng = Double.parseDouble(googlePlace.get("lng"));
+
 
             LatLng latLng = new LatLng(lat, lng);
             markerOptions.position(latLng);
             markerOptions.title(placeName + " : " + vicinity);
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+//TODO: show marker only if near a marker
+//            Location.distanceBetween(homeFragment.latitude, homeFragment.longitude, lat, lng, result);
+//
+//            if ( result[0]/100 < 1 ) {
+//                isVisited = true;
+//
+//            }
+//
+//            if (isVisited) {
+//                mgoogleMap.addMarker(markerOptions);
+//            }
 
-            mMap.addMarker(markerOptions);
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+
+//            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//            mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+
+//            mgoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//                @Override
+//                public boolean onMarkerClick(Marker marker) {
+//
+//
+//                    return false;
+//                }
+//            });
         }
     }
+
 }

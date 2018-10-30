@@ -68,7 +68,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 20f;
     int PROXIMITY_RADIUS = 10000;
-    double latitude,longitude;
+    double latitude = 51.450851;
+    double longitude = 5.480200;
+
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
@@ -208,7 +210,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             mGoogleMap.setMyLocationEnabled(true);
             mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
 
-            showNearbyPlaces("atm");
+            showNearbyPlaces("art_gallery|cemetery|church|city_hall|courthouse|embassy|hindu_temple|library|mosque|museum|park|shopping_mall|stadium|synagogue|train_station|zoo");
 
             try {
                 boolean success = mGoogleMap.setMapStyle(
@@ -229,7 +231,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     public void showNearbyPlaces(String search) {
         Object dataTransfer[] = new Object[2];
         GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
-
+        Log.d(TAG, "Koekje2: " + latitude + ", " +  longitude);
         mGoogleMap.clear();
         String url = getUrl(latitude, longitude, search);
         dataTransfer[0] = mGoogleMap;

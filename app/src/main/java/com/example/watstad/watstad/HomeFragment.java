@@ -183,7 +183,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onMapReady (GoogleMap googleMap){
-        Toast.makeText(mainActivity, "Map is Ready", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(mainActivity, "Map is Ready", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "onMapReady: map is ready");
         mGoogleMap = googleMap;
 

@@ -14,8 +14,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,11 +44,15 @@ public class ProfileFragment extends Fragment {
     private static final int CHOOSE_IMAGE = 101;
 
     ImageView imageViewProfilePicture;
-    TextView textViewName;
+    EditText editTextName;
+    Button buttonSave;
+    TextView textViewLogout;
 
     Uri uriProfileImage;
 
     String profileImageUrl;
+
+    ProgressBar progressBar;
 
     FirebaseAuth mAuth;
 
@@ -61,12 +70,24 @@ public class ProfileFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
 
         imageViewProfilePicture = view.findViewById(R.id.imageViewProfileImage);
-        textViewName = view.findViewById(R.id.textViewName);
+        editTextName = view.findViewById(R.id.editTextName);
+        buttonSave = view.findViewById(R.id.buttonSave);
+
+        progressBar = view.findViewById(R.id.progressBar);
 
         imageViewProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showImageChooser();
+            }
+        });
+
+        view.findViewById(R.id.textViewLogout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                getActivity().finish();
+                startActivity(new Intent(getActivity(), MainActivity.class));
             }
         });
 
@@ -76,8 +97,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 saveUserInformation();
-                loadUserInformation();
-                textViewName.setText("DOei");
+                buttonSave.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -87,28 +107,37 @@ public class ProfileFragment extends Fragment {
 
         if (user != null) {
             if (user.getPhotoUrl() != null) {
-                Glide.with(this).load(user.getPhotoUrl( ).toString()).into(imageViewProfilePicture);
-                textViewName.setText("Hallo smerige kut");
+                Glide.with(this).load(user.getPhotoUrl().toString()).into(imageViewProfilePicture);
             }
+            if (user.getDisplayName() != null) {
+                editTextName.setText(user.getDisplayName());
+                editTextName.setFocusable(false);
             }
-            else {
-            textViewName.setText("Hier gaat wat fout");
         }
         }
 
     private void saveUserInformation() {
+        String displayName = editTextName.getText().toString();
+
+        if (displayName.isEmpty()) {
+            editTextName.setError("Name required");
+            editTextName.requestFocus();
+            return;
+        }
+
         FirebaseUser user = mAuth.getCurrentUser();
 
         if( user!= null && profileImageUrl != null) {
             UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
                     .setPhotoUri(Uri.parse(profileImageUrl))
+                    .setDisplayName(displayName)
                     .build();
 
             user.updateProfile(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()) {
-                        textViewName.setText("Geüpdate?");
+                        Toast.makeText(getActivity(), "Profile updated!", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -127,6 +156,8 @@ public class ProfileFragment extends Fragment {
                 imageViewProfilePicture.setImageBitmap(bitmap);
 
                 uploadImageToFirebaseStorage();
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -137,10 +168,14 @@ public class ProfileFragment extends Fragment {
         final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("profilepics/"+System.currentTimeMillis() + ".jpg");
 
         if (uriProfileImage != null) {
+            progressBar.setVisibility(View.VISIBLE);
             profileImageRef.putFile(uriProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     // profileImageUrl = profileImageRef.getDownloadUrl().toString();
+
+                    progressBar.setVisibility(View.GONE);
+                    buttonSave.setVisibility(View.VISIBLE);
 
                     profileImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override

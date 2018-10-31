@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorOrange">
+    android:background="@color/colorDarkBlue">
 
 
     <TextView
@@ -13,11 +14,76 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@color/colorLightBlue"
+        android:fontFamily="@font/bookosb"
         android:paddingStart="24dp"
-        android:paddingEnd="60dp"
         android:paddingTop="14dp"
+        android:paddingEnd="60dp"
         android:text="@string/my_profile"
         android:textColor="@color/colorWhite"
-        android:textSize="24sp"
-        android:fontFamily="@font/bookosb"/>
+        android:textSize="24sp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/imageViewProfileImage"
+        android:layout_width="188dp"
+        android:layout_height="211dp"
+        android:layout_below="@+id/textViewMyProfile"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/fill_icon" />
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageViewProfileImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:background="@null"
+        android:fontFamily="@font/bookosb"
+        android:gravity="center"
+        android:hint="Tap to enter name!"
+        android:maxLength="25"
+        android:singleLine="true"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp" />
+
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextName"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="43dp"
+        android:layout_marginBottom="119dp"
+        android:background="@drawable/login_button"
+        android:fontFamily="@font/bookosb"
+        android:text="Save"
+        android:textColor="@color/colorWhite"
+        android:textSize="22sp"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="196dp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/textViewLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/bookosb"
+        android:text="Logout"
+        android:textSize="18sp" />
+
 </RelativeLayout>

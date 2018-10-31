@@ -39,7 +39,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 //    float[] result = new float[1];
 
     String poiContent = "De Markt is een plein in de binnenstad van Maastricht. Het plein ontleent zijn naam aan de warenmarkten die hier al eeuwenlang plaatsvinden. Tevens bevindt zich op de Markt het Stadhuis van Maastricht en een groot aantal horecagelegenheden. De Markt is goed bereikbaar met het openbaar vervoer.";
-    String poiTitle = "Mestreechter merret";
+    String poiTitle = "Maastrichter markt";
     String poiDate = "26-9-2018";
     //String poiAchievement = "Maastricht Pathfinder";
 

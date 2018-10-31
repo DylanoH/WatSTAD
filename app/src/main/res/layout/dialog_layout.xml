@@ -54,7 +54,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Content"
-                android:fontFamily="@font/bookos"/>
+                android:fontFamily="@font/bookos"
+                android:textColor="@color/colorBlack"
+                />
         </LinearLayout>
     </ScrollView>
 
@@ -62,30 +64,18 @@
         android:id="@+id/textViewDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/bookosb"
         android:text="Date"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollViewContent"
-        android:fontFamily="@font/bookosb"/>
-
-    <TextView
-        android:id="@+id/textViewAchievement"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Achievement"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDate"
-        android:fontFamily="@font/bookosb"/>
+        app:layout_constraintTop_toBottomOf="@+id/scrollViewContent" />
 
     <ImageButton
         android:id="@+id/imageButtonClose"

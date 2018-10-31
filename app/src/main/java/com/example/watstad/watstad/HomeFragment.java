@@ -3,6 +3,9 @@ package com.example.watstad.watstad;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -13,12 +16,14 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationListener;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,6 +55,7 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.Objects;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
 import static android.support.constraint.Constraints.TAG;
 
 public class HomeFragment extends Fragment implements OnMapReadyCallback,
@@ -72,8 +78,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     public static final int PERMISSION_REQUEST_LOCATION_CODE = 99;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 17;
-    int PROXIMITY_RADIUS = 10000;
-//    double latitude = 51.450851;
+    int PROXIMITY_RADIUS = 200; // 200 is fine radius
+    //    double latitude = 51.450851;
 //    double longitude = 5.480200;
     public double latitude;
     public double longitude;
@@ -82,6 +88,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     String poiTitle = "Mestreechter merret";
     String poiDate = "26-9-2018";
 
+    public Context context;
 
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -93,6 +100,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_home, container, false);
+
         return mView;
 
 
@@ -177,10 +185,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                             longitude = currentLocation.getLongitude();
 
 
-
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                     DEFAULT_ZOOM);
-
 
 
                         } else {
@@ -226,7 +232,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
             mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
             mGoogleMap.setMyLocationEnabled(true);
-
+            customLocations();
 
             try {
                 boolean success = mGoogleMap.setMapStyle(
@@ -277,10 +283,26 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         });
     }
 
+    public void customLocations() {
+
+        //fontys
+        double lat = 51.4520885;
+        double lng = 5.4819826;
+
+        MarkerOptions fontysMarker = new MarkerOptions();
+        LatLng latlng = new LatLng(lat, lng);
+
+        fontysMarker.position(latlng);
+        fontysMarker.title("Fontys Rachelsmolen");
+        fontysMarker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+        currentLocationMarker = mGoogleMap.addMarker(fontysMarker);
+
+
+    }
+
     public void showNearbyPlaces(String search) {
         Object dataTransfer[] = new Object[2];
         GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
-//        mGoogleMap.clear();
         String url = getUrl(latitude, longitude, search);
         dataTransfer[0] = mGoogleMap;
         dataTransfer[1] = url;
@@ -292,13 +314,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private String getUrl(double latitude, double longitude, String nearbyPlace) {
         StringBuilder googlePlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
 
-        googlePlaceUrl.append("location="+latitude+","+longitude);
-        googlePlaceUrl.append("&radius="+PROXIMITY_RADIUS);
-        googlePlaceUrl.append("&type="+nearbyPlace);
+        googlePlaceUrl.append("location=" + latitude + "," + longitude);
+        googlePlaceUrl.append("&radius=" + PROXIMITY_RADIUS);
+        googlePlaceUrl.append("&type=" + nearbyPlace);
 
-        googlePlaceUrl.append("&key="+"AIzaSyBtKXs8q3AYIhL3vjKxwgLNDzPhYF4vUmU");
+        googlePlaceUrl.append("&key=" + "AIzaSyBtKXs8q3AYIhL3vjKxwgLNDzPhYF4vUmU");
 
-        Log.d(TAG, "url = "+googlePlaceUrl.toString());
+        Log.d(TAG, "url = " + googlePlaceUrl.toString());
 
         return googlePlaceUrl.toString();
     }
@@ -335,11 +357,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 //        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 //        currentLocationMarker = mGoogleMap.addMarker(markerOptions);
 
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+        //mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
 //        mGoogleMap.animateCamera(CameraUpdateFactory.zoomBy(17));
 
     }
-
 
 
     @Override
@@ -358,8 +379,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                             // do work here
                             Log.d(TAG, "yowaddup: " + "yoyo");
                             onLocationChanged(locationResult.getLastLocation());
-                            showNearbyPlaces("art_gallery|cemetery|church|city_hall|courthouse|embassy|hindu_temple|library|mosque|museum|park|shopping_mall|stadium|synagogue|train_station|zoo");
-
+                            showNearbyPlaces("art_gallery|cemetery|church|city_hall|courthouse|embassy|hindu_temple|library|mosque|museum|park|shopping_mall|stadium|synagogue|train_station|zoo|school");
+//                            notificationCall();
                         }
 
                     },
@@ -369,18 +390,45 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     }
 
 
-
-
     @Override
-    public void onConnectionSuspended ( int i){
+    public void onConnectionSuspended(int i) {
 
     }
 
 
     @Override
-    public void onConnectionFailed (@NonNull ConnectionResult connectionResult){
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 
+
+    public void notificationCall() {
+        createNotificationChannel();
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mainActivity, "my_channel")
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setSmallIcon(R.drawable.watstad_logo_small)
+                .setContentTitle("New location discovered!")
+                .setContentText("You have discovered: !")
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        NotificationManager notificationManager = (NotificationManager) mainActivity.getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(1, notificationBuilder.build());
+
+    }
+
+    private void createNotificationChannel() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Notifications from watSTAD?!";
+            String description = "Notifications when you discover a new location";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+
+            NotificationChannel notificationChannel = new NotificationChannel("my_channel", name, importance);
+
+            notificationChannel.setDescription(description);
+
+            NotificationManager notificationManager = (NotificationManager) mainActivity.getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+    }
 }
-

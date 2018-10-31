@@ -1,8 +1,13 @@
 package com.example.watstad.watstad;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,15 +22,27 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+import static java.security.AccessController.getContext;
+
 public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
     HomeFragment homeFragment = new HomeFragment();
+    MainActivity mainActivity = new MainActivity();
+
+
+
 
     String googlePlacesData;
     GoogleMap mgoogleMap;
     String url;
     Boolean isVisited = false;
 //    float[] result = new float[1];
+
+    String poiContent = "De Markt is een plein in de binnenstad van Maastricht. Het plein ontleent zijn naam aan de warenmarkten die hier al eeuwenlang plaatsvinden. Tevens bevindt zich op de Markt het Stadhuis van Maastricht en een groot aantal horecagelegenheden. De Markt is goed bereikbaar met het openbaar vervoer.";
+    String poiTitle = "Mestreechter merret";
+    String poiDate = "26-9-2018";
+    //String poiAchievement = "Maastricht Pathfinder";
+
 
     @Override
     protected String doInBackground(Object... objects) {
@@ -67,6 +84,41 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             markerOptions.title(placeName + " : " + vicinity);
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 //TODO: show marker only if near a marker
+
+
+//            mgoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//                @Override
+//                public boolean onMarkerClick(Marker marker) {
+//                    final Dialog dialog = new Dialog(get());
+//                    dialog.setContentView(R.layout.dialog_layout);
+//                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//
+//                    TextView textViewName = dialog.findViewById(R.id.textViewName);
+//                    textViewName.setText(poiTitle);
+//
+//                    TextView textViewContent = dialog.findViewById(R.id.textViewContent);
+//                    textViewContent.setText(poiContent);
+//
+//                    TextView textViewDate = dialog.findViewById(R.id.textViewDate);
+//                    textViewDate.setText("Visited on " + poiDate);
+//
+////                    TextView textViewAchievement = dialog.findViewById(R.id.textViewAchievement);
+////                    textViewAchievement.setText("Part of " + poiAchievement);
+//
+//
+//                    dialog.show();
+//
+//                    ImageButton imageButtonClose = dialog.findViewById(R.id.imageButtonClose);
+//
+//                    imageButtonClose.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    return true;
+//                }
+//            });
 
 
 //            mgoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {

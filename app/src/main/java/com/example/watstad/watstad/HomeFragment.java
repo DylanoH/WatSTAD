@@ -2,8 +2,11 @@ package com.example.watstad.watstad;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -21,6 +24,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -72,6 +77,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 //    double longitude = 5.480200;
     public double latitude;
     public double longitude;
+
+    String poiContent = "De Markt is een plein in de binnenstad van Maastricht. Het plein ontleent zijn naam aan de warenmarkten die hier al eeuwenlang plaatsvinden. Tevens bevindt zich op de Markt het Stadhuis van Maastricht en een groot aantal horecagelegenheden. De Markt is goed bereikbaar met het openbaar vervoer.";
+    String poiTitle = "Mestreechter merret";
+    String poiDate = "26-9-2018";
+
 
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -216,7 +226,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
             mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
             mGoogleMap.setMyLocationEnabled(true);
-            showNearbyPlaces("art_gallery|cemetery|church|city_hall|courthouse|embassy|hindu_temple|library|mosque|museum|park|shopping_mall|stadium|synagogue|train_station|zoo");
+
 
             try {
                 boolean success = mGoogleMap.setMapStyle(
@@ -232,6 +242,39 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
             googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         }
+        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                final Dialog dialog = new Dialog(mainActivity);
+                dialog.setContentView(R.layout.dialog_layout);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                TextView textViewName = dialog.findViewById(R.id.textViewName);
+                textViewName.setText(poiTitle);
+
+                TextView textViewContent = dialog.findViewById(R.id.textViewContent);
+                textViewContent.setText(poiContent);
+
+                TextView textViewDate = dialog.findViewById(R.id.textViewDate);
+                textViewDate.setText("Visited on " + poiDate);
+
+//                    TextView textViewAchievement = dialog.findViewById(R.id.textViewAchievement);
+//                    textViewAchievement.setText("Part of " + poiAchievement);
+
+
+                dialog.show();
+
+                ImageButton imageButtonClose = dialog.findViewById(R.id.imageButtonClose);
+
+                imageButtonClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                return true;
+            }
+        });
     }
 
     public void showNearbyPlaces(String search) {
@@ -315,6 +358,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                             // do work here
                             Log.d(TAG, "yowaddup: " + "yoyo");
                             onLocationChanged(locationResult.getLastLocation());
+                            showNearbyPlaces("art_gallery|cemetery|church|city_hall|courthouse|embassy|hindu_temple|library|mosque|museum|park|shopping_mall|stadium|synagogue|train_station|zoo");
 
                         }
 

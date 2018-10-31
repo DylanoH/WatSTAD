@@ -166,7 +166,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                             latitude = currentLocation.getLatitude();
                             longitude = currentLocation.getLongitude();
 
-                            showNearbyPlaces("art_gallery|cemetery|church|city_hall|courthouse|embassy|hindu_temple|library|mosque|museum|park|shopping_mall|stadium|synagogue|train_station|zoo");
+
 
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                     DEFAULT_ZOOM);
@@ -216,6 +216,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
             mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
             mGoogleMap.setMyLocationEnabled(true);
+            showNearbyPlaces("art_gallery|cemetery|church|city_hall|courthouse|embassy|hindu_temple|library|mosque|museum|park|shopping_mall|stadium|synagogue|train_station|zoo");
 
             try {
                 boolean success = mGoogleMap.setMapStyle(
@@ -236,7 +237,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     public void showNearbyPlaces(String search) {
         Object dataTransfer[] = new Object[2];
         GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
-        mGoogleMap.clear();
+//        mGoogleMap.clear();
         String url = getUrl(latitude, longitude, search);
         dataTransfer[0] = mGoogleMap;
         dataTransfer[1] = url;

@@ -1,5 +1,6 @@
 package com.example.watstad.watstad;
 
+import android.app.Dialog;
 import android.location.Location;
 import android.os.AsyncTask;
 
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
-//    HomeFragment homeFragment = new HomeFragment();
+    HomeFragment homeFragment = new HomeFragment();
 
     String googlePlacesData;
     GoogleMap mgoogleMap;
@@ -66,6 +67,14 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             markerOptions.title(placeName + " : " + vicinity);
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 //TODO: show marker only if near a marker
+
+
+//            mgoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//                @Override
+//                public boolean onMarkerClick(Marker marker) {
+//                    final Dialog dialog = new Dialog(HomeFragment.getActivity());
+//                }
+//            });
 //            Location.distanceBetween(homeFragment.latitude, homeFragment.longitude, lat, lng, result);
 //
 //            if ( result[0]/100 < 1 ) {
@@ -76,8 +85,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 //            if (isVisited) {
 //                mgoogleMap.addMarker(markerOptions);
 //            }
-
-
+            mgoogleMap.addMarker(markerOptions);
 //            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 //            mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
 

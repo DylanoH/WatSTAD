@@ -31,7 +31,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
 
 
-
+    public Boolean markerShown;
     String googlePlacesData;
     GoogleMap mgoogleMap;
     String url;
@@ -69,6 +69,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
     private void showNearbyPlaces(List<HashMap<String, String>> nearbyPlaceList) {
         for (int i = 0; i<nearbyPlaceList.size(); i++) {
+            markerShown = false;
             MarkerOptions markerOptions = new MarkerOptions();
             HashMap<String, String> googlePlace = nearbyPlaceList.get(i);
 
@@ -83,61 +84,16 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             markerOptions.position(latLng);
             markerOptions.title(placeName + " : " + vicinity);
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+
+
 //TODO: show marker only if near a marker
 
 
-//            mgoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//                @Override
-//                public boolean onMarkerClick(Marker marker) {
-//                    final Dialog dialog = new Dialog(get());
-//                    dialog.setContentView(R.layout.dialog_layout);
-//                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//
-//                    TextView textViewName = dialog.findViewById(R.id.textViewName);
-//                    textViewName.setText(poiTitle);
-//
-//                    TextView textViewContent = dialog.findViewById(R.id.textViewContent);
-//                    textViewContent.setText(poiContent);
-//
-//                    TextView textViewDate = dialog.findViewById(R.id.textViewDate);
-//                    textViewDate.setText("Visited on " + poiDate);
-//
-////                    TextView textViewAchievement = dialog.findViewById(R.id.textViewAchievement);
-////                    textViewAchievement.setText("Part of " + poiAchievement);
-//
-//
-//                    dialog.show();
-//
-//                    ImageButton imageButtonClose = dialog.findViewById(R.id.imageButtonClose);
-//
-//                    imageButtonClose.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            dialog.dismiss();
-//                        }
-//                    });
-//                    return true;
-//                }
-//            });
+            if (!markerShown) {
+                mgoogleMap.addMarker(markerOptions);
+                markerShown = true;
+            }
 
-
-//            mgoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//                @Override
-//                public boolean onMarkerClick(Marker marker) {
-//                    final Dialog dialog = new Dialog(HomeFragment.getActivity());
-//                }
-//            });
-//            Location.distanceBetween(homeFragment.latitude, homeFragment.longitude, lat, lng, result);
-//
-//            if ( result[0]/100 < 1 ) {
-//                isVisited = true;
-//
-//            }
-//
-//            if (isVisited) {
-//                mgoogleMap.addMarker(markerOptions);
-//            }
-            mgoogleMap.addMarker(markerOptions);
 //            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 //            mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
 

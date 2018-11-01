@@ -66,6 +66,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private Location lastLocation;
     private Marker currentLocationMarker;
 
+    GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
 
@@ -359,7 +361,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                             Log.d(TAG, "yowaddup: " + "yoyo");
                             onLocationChanged(locationResult.getLastLocation());
                             showNearbyPlaces("art_gallery|cemetery|church|city_hall|courthouse|embassy|hindu_temple|library|mosque|museum|park|shopping_mall|stadium|synagogue|train_station|zoo");
+                            if (getNearbyPlacesData.markerShown) {
 
+                            }
                         }
 
                     },

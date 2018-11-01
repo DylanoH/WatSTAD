@@ -236,6 +236,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
             mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
             mGoogleMap.setMyLocationEnabled(true);
             customLocations();
+            notificationCall();
 
             try {
                 boolean success = mGoogleMap.setMapStyle(
@@ -388,7 +389,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                             showNearbyPlaces("art_gallery|cemetery|church|city_hall|courthouse|embassy|hindu_temple|library|mosque|museum|park|shopping_mall|stadium|synagogue|train_station|zoo|school");
 
 //                            if (isMarkerShown) {
-                                notificationCall();
+//                                notificationCall();
 //                                isMarkerShown = false;
 //                            }
                         }

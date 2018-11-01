@@ -88,14 +88,14 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             LatLng latLng = new LatLng(lat, lng);
             markerOptions.position(latLng);
             markerOptions.title(placeName + " : " + vicinity);
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(212));
-
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+            mgoogleMap.addMarker(markerOptions);
 
 //TODO: show marker only if near a marker
 
 //            homeFragment.isMarkerShown = false;
 //            if (!homeFragment.isMarkerShown) {
-                mgoogleMap.addMarker(markerOptions);
+
 
 //                homeFragment.isMarkerShown = true;
 //            }

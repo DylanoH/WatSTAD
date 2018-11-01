@@ -417,7 +417,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
         createNotificationChannel();
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mainActivity, "my_channel")
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setSmallIcon(R.drawable.watstad_logo_small)
+                .setSmallIcon(R.drawable.ic_stat_notification)
                 .setContentTitle("New location discovered!")
                 .setContentText("You have discovered: Fontys Hogeschool Eindhoven!")
                 .setPriority(NotificationCompat.PRIORITY_HIGH);

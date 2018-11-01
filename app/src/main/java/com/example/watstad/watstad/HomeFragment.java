@@ -72,23 +72,26 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private Location lastLocation;
     private Marker currentLocationMarker;
 
+//    GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
 
     public static final int PERMISSION_REQUEST_LOCATION_CODE = 99;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 17;
-    int PROXIMITY_RADIUS = 200; // 200 is fine radius
+    int PROXIMITY_RADIUS = 300; // 200 is fine radius
     //    double latitude = 51.450851;
 //    double longitude = 5.480200;
     public double latitude;
     public double longitude;
 
+    public Boolean isMarkerShown = false;
+
     String poiContent = "De Markt is een plein in de binnenstad van Maastricht. Het plein ontleent zijn naam aan de warenmarkten die hier al eeuwenlang plaatsvinden. Tevens bevindt zich op de Markt het Stadhuis van Maastricht en een groot aantal horecagelegenheden. De Markt is goed bereikbaar met het openbaar vervoer.";
     String poiTitle = "Mestreechter merret";
     String poiDate = "26-9-2018";
 
-    public Context context;
 
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -191,7 +194,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
                         } else {
                             Log.d(TAG, "onComplete: current location is null");
-                            Toast.makeText(getActivity(), "unable to get current location", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getActivity(), "unable to get current location", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -217,7 +220,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Toast.makeText(mainActivity, "Map is Ready", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mainActivity, "Map is Ready", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "onMapReady: map is ready");
         mGoogleMap = googleMap;
 
@@ -314,13 +317,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
     private String getUrl(double latitude, double longitude, String nearbyPlace) {
         StringBuilder googlePlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
 
-        googlePlaceUrl.append("location=" + latitude + "," + longitude);
-        googlePlaceUrl.append("&radius=" + PROXIMITY_RADIUS);
-        googlePlaceUrl.append("&type=" + nearbyPlace);
+        googlePlaceUrl.append("location="+latitude+","+longitude);
+        googlePlaceUrl.append("&radius="+PROXIMITY_RADIUS);
+        googlePlaceUrl.append("&type="+nearbyPlace);
 
-        googlePlaceUrl.append("&key=" + "AIzaSyBtKXs8q3AYIhL3vjKxwgLNDzPhYF4vUmU");
+        googlePlaceUrl.append("&key="+"AIzaSyBtKXs8q3AYIhL3vjKxwgLNDzPhYF4vUmU");
 
-        Log.d(TAG, "url = " + googlePlaceUrl.toString());
+        Log.d(TAG, "url = "+googlePlaceUrl.toString());
 
         return googlePlaceUrl.toString();
     }
@@ -351,6 +354,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
 
+        Log.d(TAG, "koekje4: " + isMarkerShown);
+
 //        MarkerOptions markerOptions = new MarkerOptions();
 //        markerOptions.position(latlng);
 //        markerOptions.title("Current Location");
@@ -361,6 +366,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 //        mGoogleMap.animateCamera(CameraUpdateFactory.zoomBy(17));
 
     }
+
 
 
     @Override
@@ -380,7 +386,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                             Log.d(TAG, "yowaddup: " + "yoyo");
                             onLocationChanged(locationResult.getLastLocation());
                             showNearbyPlaces("art_gallery|cemetery|church|city_hall|courthouse|embassy|hindu_temple|library|mosque|museum|park|shopping_mall|stadium|synagogue|train_station|zoo|school");
-//                            notificationCall();
+
+//                            if (isMarkerShown) {
+                                notificationCall();
+//                                isMarkerShown = false;
+//                            }
                         }
 
                     },
@@ -408,7 +418,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setSmallIcon(R.drawable.watstad_logo_small)
                 .setContentTitle("New location discovered!")
-                .setContentText("You have discovered: !")
+                .setContentText("You have discovered: Fontys Hogeschool Eindhoven!")
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
         NotificationManager notificationManager = (NotificationManager) mainActivity.getSystemService(NOTIFICATION_SERVICE);

@@ -31,12 +31,12 @@ import static java.security.AccessController.getContext;
 
 public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
-    HomeFragment homeFragment = new HomeFragment();
-    MainActivity mainActivity = new MainActivity();
+  //  HomeFragment homeFragment = new HomeFragment();
+   // MainActivity mainActivity = new MainActivity();
 
 
 
-
+    //public Boolean markerShown;
     String googlePlacesData;
     GoogleMap mgoogleMap;
     String url;
@@ -74,6 +74,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
     private void showNearbyPlaces(List<HashMap<String, String>> nearbyPlaceList) {
         for (int i = 0; i<nearbyPlaceList.size(); i++) {
+
             MarkerOptions markerOptions = new MarkerOptions();
             HashMap<String, String> googlePlace = nearbyPlaceList.get(i);
 
@@ -89,11 +90,27 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             markerOptions.title(placeName + " : " + vicinity);
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 
-            mgoogleMap.addMarker(markerOptions);
 
+//TODO: show marker only if near a marker
 
-           // notificationCall(placeName);
+//            homeFragment.isMarkerShown = false;
+//            if (!homeFragment.isMarkerShown) {
+                mgoogleMap.addMarker(markerOptions);
 
+//                homeFragment.isMarkerShown = true;
+//            }
+
+//            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//            mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+
+//            mgoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//                @Override
+//                public boolean onMarkerClick(Marker marker) {
+//
+//
+//                    return false;
+//                }
+//            });
         }
     }
 

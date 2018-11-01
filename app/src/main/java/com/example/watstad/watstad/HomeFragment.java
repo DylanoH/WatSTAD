@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     String poiContent = "De Markt is een plein in de binnenstad van Maastricht. Het plein ontleent zijn naam aan de warenmarkten die hier al eeuwenlang plaatsvinden. Tevens bevindt zich op de Markt het Stadhuis van Maastricht en een groot aantal horecagelegenheden. De Markt is goed bereikbaar met het openbaar vervoer.";
     String poiTitle = "Mestreechter merret";
-    String poiDate = "26-9-2018";
+    String poiDate = "01-11-2018";
 
 
 

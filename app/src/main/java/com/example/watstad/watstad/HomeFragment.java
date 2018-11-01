@@ -88,8 +88,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
 
     public Boolean isMarkerShown = false;
 
-    String poiContent = "De Markt is een plein in de binnenstad van Maastricht. Het plein ontleent zijn naam aan de warenmarkten die hier al eeuwenlang plaatsvinden. Tevens bevindt zich op de Markt het Stadhuis van Maastricht en een groot aantal horecagelegenheden. De Markt is goed bereikbaar met het openbaar vervoer.";
-    String poiTitle = "Mestreechter merret";
+    String poiContent = "Fontys Hogescholen is een Nederlandse instelling voor hoger beroepsonderwijs met de statutaire zetel in Tilburg. Internationaal wordt de naam Fontys University of Applied Sciences gevoerd. De naam Fontys komt van het Latijnse woord 'fons' wat 'bron' betekent. Fontys wil hiermee duidelijk maken dat de instelling een bron van kennis wil zijn voor haar studenten. Fontys Hogescholen bestaat uit een dertigtal instituten, voornamelijk gevestigd in Zuid-Nederland: Eindhoven, 's-Hertogenbosch, Sittard, Tilburg, Veghel en Venlo.";
+    String poiTitle = "Fontys Hogescholen";
     String poiDate = "01-11-2018";
 
 
@@ -419,7 +419,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback,
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setSmallIcon(R.drawable.ic_stat_notification)
                 .setContentTitle("New location discovered!")
-                .setContentText("You have discovered: Fontys Hogeschool Eindhoven!")
+                .setContentText("You have discovered: Fontys Hogescholen!")
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
         NotificationManager notificationManager = (NotificationManager) mainActivity.getSystemService(NOTIFICATION_SERVICE);
